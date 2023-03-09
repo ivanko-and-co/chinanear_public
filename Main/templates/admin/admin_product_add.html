@@ -1,0 +1,331 @@
+
+{% extends 'admin/Base/admin_base.html' %}
+
+{% block title %}Admin{% endblock title %}
+
+{% block link %}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/product_add.css') }}">
+{% endblock link %}
+
+
+{% block main %}
+		<main>
+			<div class="poisk">
+                <input class="input-poisk" value type="search" placeholder="Введите наименование продавца"   autocomplete= "off" id="null">
+                <span class="icon-poisk"><img src="{{ url_for('static', filename='img/loop.svg') }}" alt=""></span>
+    		</div>
+			<hr>
+			<div class="diller_and_button">
+				<div class="diller">
+					<p>Продавец:</p>
+					<a href="#">Calvine Cline</a>
+					<hr>
+					<span>Товары</span>
+					<hr>
+					<span>Товар: №XM8S2459WML-1</span>
+				</div>
+				<div class="buttons">
+					<button><a href="{{ url_for('admin_user', seller='1') }}">Закрыть</a></button>
+                    <button><a href="{{ url_for('admin_user', seller='1') }}">Сохранить</a></button>
+				</div>
+			</div>
+			<div class="container_info_order">
+				<div class="info_top">
+					<p>Статус:</p>
+					<input type="checkbox" class="custom-checkbox" id="cb1">
+					<label for="cb1"></label>
+					<span>Активный</span>
+				</div>
+			</div>
+			<div class="container">
+				<div class="heading">
+					<h1>Изображения товара</h1>
+					<div class="help-content">
+						<img src="{{ url_for('static', filename='img/help-solid.svg') }}" alt="">
+						<div class="help-paragraph">
+							<p>Помощь</p>
+						</div>
+					</div>
+				</div>
+				<div class="img_container">
+					<div class="main_img">
+						<img src="{{ url_for('static', filename='img/product1.svg') }}" alt="">
+					</div>
+					<div class="img_right">
+						<div class="img_right_top">
+							<div class="additional_img">
+								<img src="{{ url_for('static', filename='img/product1.svg') }}" alt="">
+							</div>
+							<div class="additional_img">
+								<img src="{{ url_for('static', filename='img/product1.svg') }}" alt="">
+							</div>
+							<div class="additional_img">
+								<img src="{{ url_for('static', filename='img/product1.svg') }}" alt="">
+							</div>
+							<div class="additional_img">
+								<img src="{{ url_for('static', filename='img/product1.svg') }}" alt="">
+							</div>
+							<div class="additional_img">
+								<img src="{{ url_for('static', filename='img/product1.svg') }}" alt="">
+							</div>
+							<div class="additional_img">
+								<img src="{{ url_for('static', filename='img/product1.svg') }}" alt="">
+							</div>
+						</div>
+						<div class="img_right_bottom">
+							<div class="additional_img">
+								<img src="{{ url_for('static', filename='img/product1.svg') }}" alt="">
+							</div>
+							<div class="additional_img">
+								<img src="{{ url_for('static', filename='img/product1.svg') }}" alt="">
+							</div>
+							<div class="additional_img">
+								<img src="{{ url_for('static', filename='img/product1.svg') }}" alt="">
+							</div>
+							<div class="additional_img">
+								<img src="{{ url_for('static', filename='img/product1.svg') }}" alt="">
+							</div>
+							<div class="additional_img">
+								<img src="{{ url_for('static', filename='img/product1.svg') }}" alt="">
+							</div>
+							<div class="additional_img">
+								<img src="{{ url_for('static', filename='img/product1.svg') }}" alt="">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="product_info">
+					<div class="heading">
+						<h1>Наименование и описание товара</h1>
+						<div class="help-content">
+							<img src="{{ url_for('static', filename='img/help-solid.svg') }}" alt="">
+							<div class="help-paragraph">
+								<p>Помощь</p>
+							</div>
+						</div>
+					</div>
+					<div class="info-container">
+						<div class="info-name">
+							<img src="{{ url_for('static', filename='img/ru-flag.svg') }}" alt="">
+							<p>RU</p>
+							<div class="input_label">
+								<div class="label">
+									<label for="name">Наименование товара на русском языке</label>
+								</div>
+								<input type="text" placeholder="Наименование товара на русском языке">
+							</div>
+						</div>
+						<div class="input_label_two">
+							<div class="label">
+								<label for="name">Краткое описание товара на русском языке</label>
+							</div>
+							<input type="text" placeholder="Краткое описание товара на русском языке">
+						</div>
+						<textarea class="full_description" placeholder="Подробное описание товара на русском языке"></textarea>
+					</div>
+					<div class="info-container">
+						<div class="info-name">
+							<img src="{{ url_for('static', filename='img/en-flag.svg') }}" alt="">
+							<p>GB</p>
+							<div class="input_label">
+								<div class="label">
+									<label for="name">Product name in English</label>
+								</div>
+								<input type="text" placeholder="Product name in English">
+							</div>
+						</div>
+						<div class="input_label_two">
+							<div class="label">
+								<label for="name">Brief product description in English</label>
+							</div>
+							<input type="text" placeholder="Brief product description in English">
+						</div>
+						<textarea class="full_description" placeholder="Detailed product description in English"></textarea>
+					</div>
+					<div class="info-container">
+						<div class="info-name">
+							<img src="{{ url_for('static', filename='img/china-flag.svg') }}" alt="">
+							<p>CH</p>
+							<div class="input_label">
+								<div class="label">
+									<label for="name">中文產品名稱</label>
+								</div>
+								<input type="text" placeholder="中文產品名稱">
+							</div>
+						</div>
+						<div class="input_label_two">
+							<div class="label">
+								<label for="name">中文產品簡介</label>
+							</div>
+							<input type="text" placeholder="中文產品簡介">
+						</div>
+						<textarea class="full_description" placeholder="中文詳細的產品描述"></textarea>
+					</div>
+				</div>
+				<div class="category_product">
+					<div class="heading">
+						<h1>Выберите категорию товара</h1>
+						<div class="help-content">
+							<img src="{{ url_for('static', filename='img/help-solid.svg') }}" alt="">
+							<div class="help-paragraph">
+								<p>Помощь</p>
+							</div>
+						</div>
+					</div>
+					<div class="category_list">
+						<div class="category-choosing">
+							<div class="label">
+								<label for="name">Category 1st level</label>
+							</div>
+							<select name="" id="">
+								<option disabled selected>Select Category 1st level</option>
+                                {% for i in category %}
+                                    <option data-name="{{ i[1] }}">{{ i[0] }}</option>
+                                {% endfor %}
+							</select>
+						</div>
+						<div class="category-choosing">
+							<div class="label">
+								<label for="name">Category 2st level</label>
+							</div>
+							<select name="" id="">
+								<option value="">Категория 1</option>
+								<option value="">Категория 2</option>
+								<option value="">Категория 3</option>
+								<option value="">Категория 4</option>
+							</select>
+						</div>
+						<div class="category-choosing">
+							<div class="label">
+								<label for="name">Category 3st level</label>
+							</div>
+							<select name="" id="">
+								<option value="">Категория 1</option>
+								<option value="">Категория 2</option>
+								<option value="">Категория 3</option>
+								<option value="">Категория 4</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="quantity_price">
+				 	<div class="heading">
+						<h1>Выберите единицы измерения, введите остатки, количество и стоимость товара</h1>
+						<div class="help-content">
+							<img src="{{ url_for('static', filename='img/help-solid.svg') }}" alt="">
+							<div class="help-paragraph">
+								<p>Помощь</p>
+							</div>
+						</div>
+					</div>
+					<div class="quantity_price_container">
+						<div class="quantity_price_container_top">
+							<div class="quantity_price-choosing">
+								<div class="label">
+									<label for="name">Units</label>
+								</div>
+								<input type="text" placeholder="Select units">
+							</div>
+							<div class="quantity_price-choosing">
+								<div class="label">
+									<label for="name">Stock</label>
+								</div>
+								<input type="number" placeholder="1999">
+							</div>
+							<div class="quantity_price-choosing">
+								<div class="label">
+									<label for="name">Quantity from</label>
+								</div>
+								<input type="number" placeholder="1">
+							</div>
+							<div class="quantity_price-choosing">
+								<div class="label">
+									<label for="name">Quantity to</label>
+								</div>
+								<input type="number" placeholder="99">
+							</div>
+							<div class="quantity_price-choosing">
+								<div class="label">
+									<label for="name">Price</label>
+								</div>
+								<input class="price" type="number" placeholder="0.0">
+							</div>
+						</div>
+						<div class="quantity_price_container_other">
+							<div class="quantity_price-choosing">
+								<div class="label">
+									<label for="name">Quantity from</label>
+								</div>
+								<input type="number" placeholder="100">
+							</div>
+							<div class="quantity_price-choosing">
+								<div class="label">
+									<label for="name">Quantity to</label>
+								</div>
+								<input type="number" placeholder="999">
+							</div>
+							<div class="quantity_price-choosing">
+								<div class="label">
+									<label for="name">Price</label>
+								</div>
+								<input class="price" type="number" placeholder="0.0">
+							</div>
+							<button><img src="{{ url_for('static', filename='img/delete.svg') }}" alt=""></button>
+						</div>
+						<div class="quantity_price_container_other">
+							<div class="quantity_price-choosing">
+								<div class="label">
+									<label for="name">Quantity from</label>
+								</div>
+								<input type="number" placeholder="1000">
+							</div>
+							<div class="quantity_price-choosing">
+								<div class="label">
+									<label for="name">Quantity to</label>
+								</div>
+								<input type="number" placeholder="4999">
+							</div>
+							<div class="quantity_price-choosing">
+								<div class="label">
+									<label for="name">Price</label>
+								</div>
+								<input class="price" type="number" placeholder="0.0">
+							</div>
+							<button><img src="{{ url_for('static', filename='img/delete.svg') }}" alt=""></button>
+						</div>
+						<div class="quantity_price_container_other">
+							<div class="quantity_price-choosing">
+								<div class="label">
+									<label for="name">Quantity from</label>
+								</div>
+								<input type="number" placeholder="5000">
+							</div>
+							<div class="quantity_price-choosing">
+								<div class="label">
+									<label for="name">Quantity to</label>
+								</div>
+								<input type="number" placeholder="9999">
+							</div>
+							<div class="quantity_price-choosing">
+								<div class="label">
+									<label for="name">Price</label>
+								</div>
+								<input class="price" type="number" placeholder="0.0">
+							</div>
+							<button><img src="{{ url_for('static', filename='img/delete.svg') }}" alt=""></button>
+						</div>
+						<div class="more">
+							<input type="checkbox" class="custom-checkbox" id="cb2"/>
+							<label for="cb2"></label>
+						 	<p>Более ХХХХХХ - свяжитесь с продавцом</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<hr>
+			<div class="buttons_bottom">
+                <button><a href="{{ url_for('admin_user', seller='1') }}">Закрыть</a></button>
+                <button><a href="{{ url_for('admin_user', seller='1') }}">Сохранить</a></button>
+			</div>
+		</main>
+{% endblock main %}

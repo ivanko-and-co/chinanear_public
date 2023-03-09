@@ -1,0 +1,130 @@
+{% extends 'main/Base/base.html' %}
+
+{% block title %}ChinaNear | Главная{% endblock title %}
+
+{% block link %}
+<script defer src="{{ url_for('static', filename='scripts/galery.js') }}"></script>
+<script defer src="{{ url_for('static', filename='scripts/calc.js') }}"></script>
+<script defer src="{{ url_for('static', filename='scripts/jquery-3.6.0.min.js') }}"></script>
+<script defer src="{{ url_for('static', filename='scripts/cart.js') }}"></script>
+{% endblock link %}
+
+
+{% block main %}
+<main class="content">
+    <div class="container">
+        <nav class="top-nav">
+            <div class="top-nav__left">
+                <div class="top-nav__item">
+                    <a href="{{ url_for('home') }}">{{ tree[0][0] }}</a>
+                </div>
+                <img src="{{ url_for('static', filename='img/arrow.svg') }}" alt="" />
+                <div class="top-nav__item">
+                    <a href="{{ url_for('home', l1_category=tree[0][1]) }}">{{ tree[1][0] }}</a>
+                </div>
+                <img src="{{ url_for('static', filename='img/arrow.svg') }}" alt="" />
+                <div class="top-nav__item">
+                    <a href="{{ url_for('home', l1_category=tree[0][1], l2_category=tree[1][1]) }}">{{ tree[2][0] }}</a>
+                </div>
+            </div>
+        </nav>
+        <div class="wrapper">
+            <div class="producter">
+                <div class="producter__title">
+                    <img class="control" src="{{ url_for('static', filename='img/control.png') }}" alt="" />
+                    <h1>{{ name }}</h1>
+                </div>
+                <div class="producter__short-info">
+                    <div class="short-info__galery">
+                        <div class="galery__nav">
+                            {% for i in photo %}
+                            <img class="galery__mini" src="{{ i[0] }}" alt=""
+                                onclick="{{ 'currentSlide(' + i[1] + ')'}}" />
+                            {% endfor %}
+                        </div>
+                        <div class="galery__big">
+                            {% for i in photo %}
+                            <img src="{{ i[0] }}" alt="" class="big-img myslides" />
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="short-info__info">
+                        <div class="information">
+                            <h2 class="info__title">{{ conf['product']['short_description'] }}</h2>
+                            <div class="info__text">
+                                {{ short_description }}
+                            </div>
+                        </div>
+                        <div class="short-info__table">
+                            <div class="table__title">
+                                <span>{{ conf['product']['product_price'] }}</span>
+                                {% if ses[-1] == 'buyer' %}
+                                <button class="deliver__link transpbg men">
+                                    {{ conf['product']['my_price'] }}
+                                </button>
+                                {% endif %}
+                                <form class="quantity-price" data-p_uid="{{ p_uid }}" data-seller_uid="{{ s_uid }}">
+                                    <div class="quantity__body">
+                                        <div class="q-order__counter w100">
+                                            <span class="q-number__title">{{ conf['product']['quantity'] }}</span>
+                                            <input placeholder="0" class="q-number tal" type="number" name="quantity"
+                                                id="quantityQuan" />
+                                        </div>
+                                        <div class="q-order__counter w100">
+                                            <span class="q-number__currency">{{ session['currency'] }}</span>
+                                            <span class="q-number__title">{{ conf['product']['price'] }}</span>
+                                            <input placeholder="0" class="q-number noap" type="number" name="price"
+                                                id="quantityPrice" />
+                                        </div>
+                                        <div class="q-order__counter w100">
+                                            <span class="q-number__title">{{ conf['product']['total'] }}</span>
+                                            <span class="q-number__currency">{{ session['currency'] }}</span>
+                                            <input placeholder="0" class="q-number noap bold" type="number" name="total"
+                                                id="quantityTotal" disabled />
+                                        </div>
+                                        <div class="quantity__body-btns">
+                                            <button class="quantity__body-btn">{{ conf['product']['close'] }}</button>
+                                            <button class="quantity__body-btn bold5" id="send-quantity-price">
+                                                {{ conf['product']['send'] }}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="table__items">
+                                <div class="table__item-title">
+                                    {% for i in count %}
+                                    <span class="table__text">{{ i }} {{ unit }}</span>
+                                    {% endfor %}
+                                    <span class="table__text">{{ conf['product']['more'] }}</span>
+                                </div>
+                                <div class="table__item">
+                                    {% for i in price %}
+                                    <span class="table__text">{{ i }} {{ session['currency'] }}</span>
+                                    {% endfor %}
+                                    <a href="{{ url_for('start_chat', trader=s_uid) }}" class="table__text little"><span
+                                            class="table__text little">{{ conf['product']['call'] | safe }}</span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="producter__info">
+                    <h3 class="producter__info-title">{{ conf['product']['product_info'] }}</h3>
+                    {{ description | safe }}
+                </div>
+            </div>
+            {% if ses[-1] == 'buyer' %}
+            <div class="addcart">
+                <span class="addcart__info">{{ conf['product']['info_text'] }}:</span>
+                <a href="{{ url_for('start_chat', trader=s_uid) }}"><span class="deliver__link">{{
+                        conf['product']['chat'] }}</span></a>
+                <button onclick="" name="addtocart" class="price__button">
+                    {{ conf['product']['add'] }}
+                </button>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</main>
+{% endblock main %}

@@ -1,0 +1,154 @@
+{% extends 'admin/Base/admin_base.html' %}
+
+{% block title %}Admin{% endblock title %}
+
+{% block link %}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/product_list.css') }}">
+<script defer src="{{ url_for('static', filename='scripts/category_loader.js') }}"></script>
+<script defer src="{{ url_for('static', filename='scripts/filter_product.js') }}"></script>
+<script defer src="{{ url_for('static', filename='scripts/filter.js') }}"></script>
+{% endblock link %}
+
+
+{% block main %}
+<main>
+    <div class="poisk">
+        <input class="input-poisk" value type="search" placeholder="Введите наименование продавца" autocomplete="off"
+            id="null">
+        <span class="icon-poisk"><img src="{{ url_for('static', filename='img/loop.svg') }}" alt=""></span>
+    </div>
+    <hr>
+    <div class="diller">
+        <p>Продавец:</p>
+        <a href="#">Calvine Cline</a>
+        <hr>
+        <span>Товары</span>
+    </div>
+    <div class="filter">
+        <div class="filter1">
+            <p>{{ conf['product_list']['visib'] }}</p>
+            <select id="product-status">
+                <option>{{ conf['product_list']['v_all'] }}</option>
+                <option value="New">{{ conf['product_list']['v_new'] }}</option>
+                <option value="Ready for payment">{{ conf['product_list']['v_rd_pay'] }}</option>
+                <option value="Ready to ship">{{ conf['product_list']['v_rd_deliv'] }}</option>
+                <option value="Delivery">{{ conf['product_list']['v_delivery'] }}</option>
+                <option value="Canceled">{{ conf['product_list']['v_cancel'] }}</option>
+            </select>
+        </div>
+        <div class="filter_1">
+            <p>{{ conf['product_list']['category_1'] }}:</p>
+            <select id="category_1">
+                <option selected disabled>{{ conf['product_list']['select_category'] }}</option>
+                {% for i in category %}
+                    {% if session['localization'] == 'Ru' %}
+                        <option value="{{ i[1] }}">{{ i[0] }}</option>
+                    {% else %}
+                        <option value="{{ i[1] }}">{{ i[1] }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        <div class="filter_1">
+            <p>{{ conf['product_list']['category_2'] }}:</p>
+            <select disabled id="category_2">
+                <option selected disabled>{{ conf['product_list']['select_category'] }}</option>
+            </select>
+        </div>
+        <div class="filter_1">
+            <p>{{ conf['product_list']['category_3'] }}:</p>
+            <select disabled id="category_3">
+                <option selected disabled>{{ conf['product_list']['select_category'] }}</option>
+            </select>
+        </div>
+        <div class="buttons">
+            <button id="apply-filters">{{ conf['product_list']['apply'] }}</button>
+            <button id="reset-filters">{{ conf['product_list']['reset_filter'] }}</button>
+        </div>
+    </div>
+    <div class="action">
+        <div class="dropdown">
+            <button class="b-action">{{ conf['product_list']['action'] }}</button>
+            <div class="dropdown-content-left">
+                <a href="#">{{ conf['product_list']['a_delete'] }}</a>
+                <a href="#">{{ conf['product_list']['a_change'] }}</a>
+                 <a href="#">{{ conf['product_list']['a_activate'] }}</a>
+                 <a href="#">{{ conf['product_list']['a_deactivate'] }}</a>
+              </div>
+        </div>
+        <div class="page">
+            {% if page > 1 %}
+            <button class="prev-page">{{ conf['pagination']['previous'] }}</button>
+            {% endif %}
+            <div class="col pages-list">
+                <a>1</a>
+                <a>2</a>
+                <a>3</a>
+                <a>4</a>
+                <a>5</a>
+            </div>
+            <button class="next-page">{{ conf['pagination']['next'] }}</button>
+        </div>
+    </div>
+    <div class="table_product">
+        <table>
+            <tr>
+                <th>
+                    <input type="checkbox" class="custom-checkbox" id="cb">
+                    <label for="cb"></label>
+                </th>
+                <th colspan="2">{{ conf['product_list']['product'] }}</th>
+                <th>{{ conf['product_list']['category'] }}</th>
+                <th>{{ conf['product_list']['create'] }}</th>
+                <th>{{ conf['product_list']['activate'] }}</th>
+                <th colspan="2">{{ conf['product_list']['min_price'] }}</th>
+            </tr>
+            {% for i in products %}
+            <tr>
+                <td>
+                    <input type="checkbox" class="custom-checkbox" id="{{ i[0] }}">
+                    <label for="{{ i[0] }}"></label>
+                </td>
+                <td><img src="{{ i[1] }}" alt=""></td>
+                <td>
+                    <p>{{ i[2] }}</p>
+                    <span>Остаток, шт.: {{ i[3] }}</span>
+                </td>
+                <td>{{ i[4] }}</td>
+                <td>{{ i[5] }}</td>
+                <td>
+                    <div class="status">{{ conf['product_list']['a_true'] if i[6] == True else conf['product_list']['a_false'] }}</div>
+                </td>
+                <td>{{ i[7] }} {{ session['currency'] }}</td>
+                <td>
+                    <div class="dropdown">
+                        <button class="three_point"></button>
+                        <div class="dropdown-content">
+                            <a href="#">{{ conf['product_list']['a_delete'] }}</a>
+                            <a href="{{ url_for('admin_user', seller='1', id='1') }}">{{ conf['product_list']['a_change'] }}</a>
+                            <a href="#">{{ conf['product_list']['a_activate'] }}</a>
+                            <a href="#">{{ conf['product_list']['a_deactivate'] }}</a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div class="action-bottom">
+        <div class="page">
+            {% if page > 1 %}
+            <button class="prev-page">{{ conf['pagination']['previous'] }}</button>
+            {% endif %}
+            <div class="col pages-list">
+                <a>1</a>
+                <a>2</a>
+                <a>3</a>
+                <a>4</a>
+                <a>5</a>
+            </div>
+            <button class="next-page">{{ conf['pagination']['next'] }}</button>
+        </div>
+    </div>
+</main>
+{% endblock main %}

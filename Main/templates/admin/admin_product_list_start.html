@@ -1,0 +1,37 @@
+{% extends 'admin/Base/admin_base.html' %}
+
+{% block title %}Admin{% endblock title %}
+
+{% block link %}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/product_list.css') }}">
+{% if str == '1' %}
+<script defer src="{{ url_for('static', filename='js/searchOrders.js') }}"></script>
+{% else %}
+<script defer src="{{ url_for('static', filename='js/searchProduct.js') }}"></script>
+{% endif %}
+{% endblock link %}
+
+
+{% block main %}
+		<main>
+			<div class="poisk">
+                <input
+                  class="input-poisk"
+                  type="search"
+                  placeholder="Введите наименование"
+                  autocomplete="off"
+                  id="seller-search"
+                />
+                <span class="icon-poisk"
+                  ><img src="{{ url_for('static', filename='img/loop.svg') }}" alt=""
+                /></span>
+                <ul id="sellers-list" style="display: none;">
+                  <li class="sellers-list__li"><a href="#">Продавец 1</a></li>
+                  <li class="sellers-list__li"><a href="#">Продавец 2</a></li>
+                  <li class="sellers-list__li"><a href="#">Продавец 3</a></li>
+                </ul>
+              </div>
+			<hr>
+			<h2>Введите наименование продавца</h2>
+		</main>
+{% endblock main %}

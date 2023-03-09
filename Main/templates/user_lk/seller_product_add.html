@@ -1,0 +1,257 @@
+{% extends 'user_lk/Base/base_lk.html' %}
+{% block title %}LK{% endblock title %}
+
+{% block link %}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/product_add.css') }}">
+<script defer src="https://cdn.tiny.cloud/1/x9jub1rugdtmzvfvxu9i9b0616ao8gnnf8uqcla1cjnva5nw/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<script defer src="{{ url_for('static', filename='js/jquery-3.6.0.min.js') }}"></script>
+<script defer src="{{ url_for('static', filename='scripts/category_loader.js') }}"></script>
+<script defer src="{{ url_for('static', filename='js/seller_page.js') }}"></script>
+<script defer src="{{ url_for('static', filename='scripts/product_add.js') }}"></script>
+{% endblock link %}
+
+
+{% block main %}
+	<main>
+		<form action="/profile/product_add_save" enctype="multipart/form-data" method="post" name = "form1">
+			<div class="name_seller">
+				<div class="detail_header-left_left">
+					<a href="#"><img src="{{ url_for('static', filename='img/return.svg') }}" alt=""></a>
+					<h1>Новый товар</h1>
+					<div class="seller_info_top">
+						<input type="checkbox" class="custom-checkbox" id="is_active" name="is_active">
+						<label for="is_active"></label>
+						<span>Активный</span>
+					</div>
+				</div>
+				<div class="buttons">
+					<button>Закрыть</button>
+					<button class="save">Сохранить</button>
+				</div>
+			</div>
+			<hr>
+			<div class="container">
+				<div class="heading">
+					<h1>Изображения товара</h1>
+					<div class="help-content">
+						<img src="{{ url_for('static', filename='img/help-solid.svg') }}" alt="">
+						<div class="help-paragraph">
+							<p>Помощь</p>
+						</div>
+					</div>
+				</div>
+				<div class="img_container">
+					<div class="main_img product_img_preview">
+						<input type="file" accept="image/*" name="preview">
+						<img src="{{ url_for('static', filename='img/product1.svg') }}" alt="">
+					</div>
+					<div class="img_right">
+						<div class="img_right_top">
+							<div class="additional_img product_img_preview">
+								<input type="file" accept="image/*" name="image[]">
+								<img src="{{ url_for('static', filename='img/product1.svg') }}" alt="">
+							</div>
+							<div class="additional_img product_img_preview">
+								<input type="file" accept="image/*" name="image[]">
+								<img src="{{ url_for('static', filename='img/product1.svg') }}" alt="">
+							</div>
+							<div class="additional_img product_img_preview">
+								<input type="file" accept="image/*" name="image[]">
+								<img src="{{ url_for('static', filename='img/product1.svg') }}" alt="">
+							</div>
+						</div>
+						<div class="img_right_bottom">
+							<div class="additional_img product_img_preview">
+								<input type="file" accept="image/*" name="image[]">
+								<img src="{{ url_for('static', filename='img/product1.svg') }}" alt="">
+							</div>
+							<div class="additional_img product_img_preview">
+								<input type="file" accept="image/*" name="image[]">
+								<img src="{{ url_for('static', filename='img/product1.svg') }}" alt="">
+							</div>
+							<div class="additional_img product_img_preview">
+								<input type="file" accept="image/*" name="image[]">
+								<img src="{{ url_for('static', filename='img/product1.svg') }}" alt="">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="product_info">
+					{% if uid %}
+					<input hidden name="uid" id="uid" type="text" value="{{ uid }}"/>
+					{% endif %}
+					<div class="heading">
+						<h1>Наименование и описание товара</h1>
+						<div class="help-content">
+							<img src="{{ url_for('static', filename='img/help-solid.svg') }}" alt="">
+							<div class="help-paragraph">
+								<p>Помощь</p>
+							</div>
+						</div>
+					</div>
+					<div class="info-container">
+						<div class="info-name">
+							<div class="image">
+								<img src="{{ url_for('static', filename='img/ru-flag.svg') }}" alt="">
+								<p>RU</p>
+							</div>	
+							<div class="input_label">
+								<div class="label">
+									<label for="name">Наименование товара на русском языке</label>
+								</div>
+								<input type="text" placeholder="Наименование товара на русском языке" id="name['ru']" data-name="ru">
+							</div>
+						</div>
+						<div class="input_label_two">
+							<div class="label">
+								<label for="name">Краткое описание товара на русском языке</label>
+							</div>
+							<input type="text" placeholder="Краткое описание товара на русском языке" id="short['ru']" data-name="ru">
+						</div>
+						<textarea class="full_description" placeholder="Подробное описание товара на русском языке" id="desc['ru']"></textarea>
+					</div>
+					<div class="info-container">
+						<div class="info-name">
+							<div class="image">
+								<img src="{{ url_for('static', filename='img/en-flag.svg') }}" alt="">
+								<p>GB</p>
+							</div>
+							<div class="input_label">
+								<div class="label">
+									<label for="name">Product name in English</label>
+								</div>
+								<input type="text" placeholder="Product name in English" id="name['en-us']" data-name="en-us">
+							</div>
+						</div>
+						<div class="input_label_two">
+							<div class="label">
+								<label for="name">Brief product description in English</label>
+							</div>
+							<input type="text" placeholder="Brief product description in English" id="short['en-us']" data-name="en-us">
+						</div>
+						<textarea class="full_description" placeholder="Detailed product description in English" id="desc['en-us']"></textarea>
+					</div>
+				</div>
+				<div class="category_product">
+					<div class="heading">
+						<h1>Выберите категорию товара</h1>
+						<div class="help-content">
+							<img src="{{ url_for('static', filename='img/help-solid.svg') }}" alt="">
+							<div class="help-paragraph">
+								<p>Помощь</p>
+							</div>
+						</div>
+					</div>
+					<div class="category_list">
+						<div class="category-choosing">
+							<div class="label">
+								<label for="name">Category 1st level</label>
+							</div>
+							<select id="category_1" name="category_1">
+								<option disabled selected>Select Category 1st level</option>
+                                {% for i in category %}
+									{% if session['localization'] == 'Ru' %}
+										<option value="{{ i[1] }}">{{ i[0] }}</option>
+									{% else %}
+										<option value="{{ i[1] }}">{{ i[1] }}</option>
+									{% endif %}
+								{% endfor %}
+							</select>
+						</div>
+						<div class="category-choosing">
+							<div class="label">
+								<label for="name">Category 2st level</label>
+							</div>
+							<select id="category_2" disabled name="category_2">
+								<option disabled selected value>Select Category 2st level</option>
+								<option value="">1</option>
+								<option value="">2</option>
+								<option value="">3</option>
+								<option value="">4</option>
+							</select>
+						</div>
+						<div class="category-choosing">
+							<div class="label">
+								<label for="name">Category 3st level</label>
+							</div>
+							<select id="category_3" disabled name="category_3">
+								<option disabled selected value>Select Category 3st level</option>
+								<option value="">1</option>
+								<option value="">2</option>
+								<option value="">3</option>
+								<option value="">4</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="quantity_price">
+				 	<div class="heading">
+						<h1>Выберите единицы измерения, введите остатки, количество и стоимость товара</h1>
+						<div class="help-content">
+							<img src="{{ url_for('static', filename='img/help-solid.svg') }}" alt="">
+							<div class="help-paragraph">
+								<p>Помощь</p>
+							</div>
+						</div>
+					</div>
+					<div class="quantity_price_container">
+						<div class="quantity_price_container_top">
+                            <div class="category-choosing">
+                                <div class="label">
+                                    <label for="units">Units</label>
+                                </div>
+                                <select name="units" id="units">
+                                    <option disabled selected value>Select Units</option>
+                                    {% for i in units %}
+                                        <option value="{{ i[0] }}">{{ i[1][local] }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+							<div hidden class="quantity_price-choosing">
+								<div class="label">
+									<label for="units">Units</label>
+								</div>
+								<input type="text" placeholder="Select units" name="units" id="units">
+							</div>
+							<div class="quantity_price-choosing">
+								<div class="label">
+									<label for="stock">Stock</label>
+								</div>
+								<input type="number" placeholder="1999" name="stock" id="stock">
+							</div>
+							<div class="quantity_price-choosing">
+								<div class="label">
+									<label for="name">Quantity from</label>
+								</div>
+								<input type="number" placeholder="1" name="q_from">
+							</div>
+							<div class="quantity_price-choosing">
+								<div class="label">
+									<label for="name">Quantity to</label>
+								</div>
+								<input type="number" placeholder="99" name="q_to">
+							</div>
+							<div class="quantity_price-choosing">
+								<div class="label">
+									<label for="name">Price</label>
+								</div>
+								<input class="price" type="number" placeholder="0.0" name="q_price">
+							</div>
+							<span id="add-quantity-price">+ Добавить</span>
+						</div>
+						<div class="more">
+							<input type="checkbox" class="custom-checkbox" id="xxx_check" name="xxx_check">
+							<label for="xxx_check"></label>
+						 	<p>Более ХХХХХХ - свяжитесь с продавцом</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<hr>
+			<div class="buttons_bottom">
+				<button>Закрыть</button>
+				<button class="save">Сохранить</button>
+			</div>
+		</form>
+	</main>
+{% endblock main %}

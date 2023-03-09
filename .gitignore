@@ -1,0 +1,7 @@
+
+test.py
+*.pyc
+*.pyc
+.vscode/launch.json
+venv
+Main/static/img/products

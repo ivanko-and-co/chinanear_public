@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}{% endblock title %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/global.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/custom_reg.css') }}" />
+    <script defer src="{{ url_for('static', filename='scripts/jquery-3.6.0.min.js') }}"></script>
+    <script defer src="{{ url_for('static', filename='scripts/js.cookie.min.js') }}"></script>
+    <script defer src="{{ url_for('static', filename='js/dropdown.js') }}"></script>
+    <script defer src="{{ url_for('static', filename='scripts/popups.js') }}"></script>
+    <script defer src="{{ url_for('static', filename='scripts/mobile.js') }}"></script>
+    <script defer src="{{ url_for('static', filename='scripts/search-header.js') }}"></script>
+    {% if ses[-1] != 'none'%}
+    <script defer src="{{ url_for('static', filename='scripts/red-notify-icons.js') }}"></script>
+    {% endif %}
+
+    {% block link %}{% endblock link %}
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}" type="image/x-icon" />
+</head>
+
+<body>
+    <header class="header">
+        <div class="header-top">
+            <div class="container">
+                <nav id="dropDown" class="header-top__nav dropdown">
+                    <div class="dropdown">
+                        <button class="header__select dropbtn">
+                            <span>{{ conf['main_base']['help'] }}</span>
+                            <img class="header__select-img"
+                                src="{{ url_for('static', filename='img/arrow_drop_down.png') }}" />
+                        </button>
+                    </div>
+                    <div class="lang">
+                        <div class="dropdown">
+                            <button class="header__select language">
+                                <span>{{ conf['main_base']['leng_select'] }}</span>
+                                {% if session['localization'] == 'Ru' %}
+                                <img class="flajok" src="{{ url_for('static', filename='img/Ru.png') }}"
+                                    alt="Language" />
+                                <span>Русский</span>
+                                {% else %}
+                                <img class="flajok" src="{{ url_for('static', filename='img/En.png') }}" alt="" />
+                                <span>English</span>
+                                {% endif %}
+
+                                <img class="header__select-img"
+                                    src="{{ url_for('static', filename='img/arrow_drop_down.png') }}" alt="" />
+                            </button>
+                            <div class="dropdown-content">
+                                <a href="{{ url_for('change_localization', lang='Ru') }}"><img class="flajok"
+                                        src="{{ url_for('static', filename='img/Ru.png') }}" alt="" />Русский
+                                </a>
+                                <a href="{{ url_for('change_localization', lang='En') }}">
+                                    <img class="flajok" src="{{ url_for('static', filename='img/En.png') }}" alt="" />
+                                    English
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <button class="header__select currency">
+                            <span>{{ conf['main_base']['currency'] }}</span>
+                            {% if session['currency'] == '₽' %}
+                            <img class="flajok" src="{{ url_for('static', filename='img/Ru.png') }}" alt="Currency" />
+                            <span>RUB</span>
+                            {% else %}
+                            <img class="flajok" src="{{ url_for('static', filename='img/USD.png') }}" alt="" />
+                            <span>USD</span>
+                            {% endif %}
+                            <img class="header__select-img"
+                                src="{{ url_for('static', filename='img/arrow_drop_down.png') }}" alt="" />
+                        </button>
+                        <div class="dropdown-content">
+                            <a href="{{ url_for('change_currency', cur='₽') }}"><img class="flajok"
+                                    src="{{ url_for('static', filename='img/Ru.png') }}" alt="" />RUB</a>
+                            <a href="{{ url_for('change_currency', cur='$') }}"><img class="flajok"
+                                    src="{{ url_for('static', filename='img/USD.png') }}" alt="" />USD
+                            </a>
+                        </div>
+                    </div>
+                    {% if ses[-1] != 'none' and ses[-1] != 'administrator' %}
+                    <div class="dropdown">
+                        <button class="header__select account">
+                            <img src="{{ url_for('static', filename='img/user.svg') }}" alt="English" />
+                            <span>{{ ses[1] }}</span>
+                            <img class="header__select-img"
+                                src="{{ url_for('static', filename='img/arrow_drop_down.png') }}" alt="" />
+                        </button>
+                        <div class="dropdown-content" style="overflow-x: hidden">
+                            <a href="{{ url_for('change_localization', lang='Ru') }}"><img class="flajok"
+                                    src="{{ url_for('static', filename='img/Ru.png') }}" alt="" />Русский
+                            </a>
+                            <a href="{{ url_for('change_localization', lang='En') }}"><img class="flajok"
+                                    src="{{ url_for('static', filename='img/En.png') }}" alt="" />English
+                            </a>
+                            {% if ses[-1] == 'seller' %}
+                            <a href="{{ url_for('product_list') }}">{{ conf['main_base']['product'] }}</a>
+                            {% else %}
+                            <a href="{{ url_for('orders') }}">{{ conf['main_base']['orders'] }}</a>
+                            {% endif %}
+                            <a href="{{ url_for('chat') }}">{{ conf['main_base']['chat'] }}</a>
+                            <hr />
+                            <a href="{{ url_for('logout') }}">{{ conf['main_base']['log_out'] }}</a>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="dropdown">
+                        <button class="header__select account" id="login-btn">
+                            <img src="{{ url_for('static', filename='img/login.svg') }}" alt="Login" />
+                            <span>{{ conf['main_base']['log_in'] }}</span>
+                        </button>
+                    </div>
+                    {% endif %}
+                </nav>
+            </div>
+        </div>
+        <div class="header-bot">
+            <div class="container">
+                <div class="header-bot__body">
+                    <a href="{{ url_for('home') }}" class="header__logo">
+                        <img class="link-img" src="{{ url_for('static', filename='img/ChinaNearLogo.svg') }}" alt="" />
+                    </a>
+                    <form class="header__search">
+                        <input placeholder="Search global" class="search__field" type="search" />
+                        <button class="search__btn" type="submit">
+                            <img src="{{ url_for('static', filename='img/search.svg') }}" />
+                            <span>{{ conf['main_base']['search'] }}</span>
+                        </button>
+                        <div class="header__serch-menu" style="display: none;"></div>
+                    </form>
+                    {% if ses[-1] == 'buyer' or ses[-1] == 'seller' %}
+                    <nav class="header-nav">
+                        {% if ses[-1] == 'seller' %}
+                        <a href="{{ url_for('product_list') }}" class="nav-item">
+                            <div class="nav-item__msg">
+                                <img class="nav-item__img" src="{{ url_for('static', filename='img/products.webp') }}"
+                                    alt="Корзина" />
+                            </div>
+                            <span class="nav-item__title">{{ conf['main_base']['product'] }}</span>
+                        </a>
+                        {% else %}
+                        <a href="{{ url_for('cart') }}" class="nav-item">
+                            <div class="nav-item__msg">
+                                <span class="msg-count" id="cart-counter" style="display: none;">0</span>
+                                <img class="nav-item__img" src="{{ url_for('static', filename='img/cart.svg') }}"
+                                    alt="Корзина" />
+                            </div>
+                            <span class="nav-item__title">{{ conf['main_base']['cart'] }}</span>
+                        </a>
+                        {% endif %}
+                        <a href="{{ url_for('orders') }}" class="nav-item">
+                            <div class="nav-item__msg">
+                                <span class="msg-count" id="orders-counter" style="display: none;">0</span>
+                                <img class="nav-item__img" src="{{ url_for('static', filename='img/orders.svg') }}"
+                                    alt="Мои заказы" />
+                            </div>
+                            <span class="nav-item__title">{{ conf['main_base']['orders'] }}</span>
+                        </a>
+                        <a href="{{ url_for('chat') }}" class="nav-item">
+                            <div class="nav-item__msg">
+                                <span hidden class="msg-count">15</span>
+                                <img class="nav-item__img" src="{{ url_for('static', filename='img/chat.svg') }}"
+                                    alt="Мои чаты" />
+                            </div>
+                            <span class="nav-item__title">{{ conf['main_base']['chat'] }}</span>
+                        </a>
+                    </nav>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </header>
+    {% block main %} {% endblock main %}
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__body">
+                <h4>{{ conf['main_base']['footer'] }} (С) Evil Tech, 2022 г.</h4>
+            </div>
+        </div>
+    </footer>
+    <div class="mobile__menu">
+        <nav class="header-nav__mobile">
+            {% if session[-1] == 'buyer' %}
+            <a href="{{ url_for('cart') }}" class="nav-item">
+                <!-- <span class="msg-count">4</span> -->
+                <img class="nav-item__img" src="{{ url_for('static', filename='img/cart.svg') }}" alt="Корзина" />
+                <span class="nav-item__title">{{ conf['main_base']['cart'] }}</span>
+            </a>
+            {% endif %}
+            {% if ses[-1] != 'none' %}
+            <a href="{{ url_for('orders') }}" class="nav-item">
+                <!-- <span class="msg-count">3</span> -->
+                <img class="nav-item__img" src="{{ url_for('static', filename='img/orders.svg') }}" alt="Мои заказы" />
+                <span class="nav-item__title">{{ conf['main_base']['orders'] }}</span>
+            </a>
+            <a href="{{ url_for('chat') }}" class="nav-item">
+                <!-- <span class="msg-count">15</span> -->
+                <img class="nav-item__img" src="{{ url_for('static', filename='img/chat.svg') }}" alt="Мои чаты" />
+                <span class="nav-item__title">{{ conf['main_base']['chat'] }}</span>
+            </a>
+            {% endif %}
+            <div onclick="openUserMenu()" class="nav-item">
+                <!-- <span class="msg-count">15</span> -->
+                <img class="nav-item__img" src="{{ url_for('static', filename='img/user2.sv') }}g" alt="Профиль" />
+                <span class="nav-item__title">{{ conf['main_base']['prof'] }}</span>
+            </div>
+        </nav>
+    </div>
+    <div class="mobile-user">
+        <form class="mobile-user__body">
+            <img class="mobile-user__close" onclick="closeUserMenu()"
+                src="{{ url_for('static', filename='img/mobclose.png') }}" />
+
+            <div class="mobile-user__inputs">
+                <span class="info__text">{{ conf['main_base']['leng_select'] }}</span>
+                <select class="user__select" name="" id="">
+                    {% if session['localization'] == 'Ru' %}
+                    <option class="user__option">Русский</option>
+                    <option class="user__option" data-url="{{ url_for('change_localization', lang='En') }}">English</option>
+                    {% else %}
+                    <option class="user__option">English</option>
+                    <option class="user__option" data-url="{{ url_for('change_localization', lang='Ru') }}">Русский</option>
+                    {% endif %}
+                </select>
+            </div>
+            <div class="mobile-user__inputs">
+                <span class="info__text">{{ conf['main_base']['currency'] }}</span>
+                <select class="user__select" name="" id="">
+                    {% if session['currency'] == '₽' %}
+                    <option class="user__option">RUB</option>
+                    <option class="user__option" data-url="{{ url_for('change_currency', cur='$') }}">USD</option>
+                    {% else %}
+                    <option class="user__option">USD</option>
+                    <option class="user__option" data-url="{{ url_for('change_currency', cur='₽') }}">RUB</option>
+                    {% endif %}
+                </select>
+            </div>
+            <div class="mobile-user__inputs">
+                {% if session[-1] == 'seller' %}
+                <a class="deliver__link mmc" href="{{ url_for('product_list') }}">{{ conf['main_base']['product'] }}</a>
+                {% endif %}
+                {% if ses[-1] != 'none' %}
+                <a href="{{ url_for('logout') }}" class="product__btn">{{ conf['main_base']['log_out'] }}</a>
+                {% else %}
+                <a id="login-btn-mobile" class="product__btn">{{ conf['main_base']['log_in'] }}</a>
+                {% endif %}
+            </div>
+            <span class="info__text">{{ conf['main_base']['help'] }}</span>
+        </form>
+    </div>
+    <!--  Popup меню  -->
+
+    <!--  Форма логина  -->
+    <div class="popup_wrapper" style="display: none" id="popup-login">
+        <div class="reg-container">
+            <div class="popups-container">
+                <div class="popup">
+                    <form class="popup__body">
+                        <img src="{{ url_for('static', filename='img/ChinaNearLogo.svg') }}" alt="" />
+                        <span class="popup__line"></span>
+                        <span class="popup__aht" style="display: none">{{ conf['auth']['login']['error_text'] }}</span>
+                        <div class="popup__inputs">
+                            <input required class="popup__input" type="email" name="login" id="" />
+                            <span class="popup__input-text">{{ conf['auth']['login']['login'] }}</span>
+                        </div>
+                        <div class="popup__inputs">
+                            <input required class="popup__input" type="password" name="password" id="" />
+                            <img class="passvis" src="{{ url_for('static', filename='img/passw.svg') }}" alt="" />
+                            <span class="popup__input-text">{{ conf['auth']['login']['password'] }}</span>
+                        </div>
+                        <div class="popup__links">
+                            <a href="#" id="url-password-recovery">{{ conf['auth']['login']['fogot_pass'] }}</a>
+                            <a href="#" id="url-register">{{ conf['auth']['login']['register'] }}</a>
+                        </div>
+                        <button class="popup__btn">{{ conf['auth']['login']['button'] }}</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--  Подтверждение почты  -->
+    <div class="popup_wrapper" style="display: none" id="popup-email-confirm">
+        <div class="reg-container">
+            <div class="popups-container">
+                <div class="popup">
+                    <form class="popup__body">
+                        <span class="popup__title">{{ conf['auth']['email']['titel'] }}</span>
+                        <span class="popup__line"></span>
+                        <span class="popup__text">
+                            {{ conf['auth']['email']['text'] }}
+                        </span>
+                        <span class="popup__info popup__timer" style="display: none">Письмо отправлено. Повторный запрос
+                            возможен через
+                            <span>54</span> сек.</span>
+                        <button class="popup__btn">{{ conf['auth']['button_get'] }}</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--  Восстановление пароля  -->
+    <div class="popup_wrapper" style="display: none" id="popup-password-recovery">
+        <div class="reg-container">
+            <div class="popups-container">
+                <div class="popup">
+                    <form class="popup__body">
+                        <span class="popup__title">{{ conf['auth']['re_pass']['titel'] }}</span>
+                        <span class="popup__line"></span>
+                        <span class="popup__text">
+                            {{ conf['auth']['re_pass']['text'] }}
+                        </span>
+                        <div class="popup__inputs">
+                            <input required class="popup__input" type="email" name="" id="" />
+                            <span class="popup__input-text">E-mail</span>
+                        </div>
+                        <span class="popup__info popup__timer" style="display: none">Повторный запрос возможен через
+                            <span>54</span> сек.</span>
+                        <button class="popup__btn" id="password-recovery-button">
+                            {{ conf['auth']['button_get'] }}
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--  Восстановление пароля - На почту отправлено письмо  -->
+    <div class="popup_wrapper" style="display: none" id="popup-password-recovery-email">
+        <div class="reg-container">
+            <div class="popups-container">
+                <div class="popup">
+                    <form class="popup__body">
+                        <span class="popup__text">
+                            На адрес
+                            <span class="popup__email">username@domain.ru</span> отправлено
+                            письмо с ссылкой для восстановления пароля. Проверьте почтовый
+                            ящик и перейдите по ссылке из письма.
+                        </span>
+                        <button class="popup__btn" onclick="hideAllPopups()">
+                            Закрыть
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--  Подтверждение почты - На почту отправлено письмо  -->
+    <div class="popup_wrapper" style="display: none" id="popup-email-confirm-email">
+        <div class="reg-container">
+            <div class="popups-container">
+                <div class="popup">
+                    <form class="popup__body">
+                        <span class="popup__text">
+                            На адрес
+                            <span class="popup__email">username@domain.ru</span> отправлено
+                            письмо с ссылкой для подтверждения e-mail. Проверьте почтовый
+                            ящик и перейдите по ссылке из письма.
+                        </span>
+                        <button class="popup__btn" onclick="location.reload()">
+                            Закрыть
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--  Смена пароля  -->
+    {% if token %}
+    <div class="popup_wrapper" id="popup-password-change">
+        <div class="reg-container">
+            <div class="popups-container">
+                <div class="popup">
+                    <form class="popup__body">
+                        <span class="popup__title">{{ conf['auth']['new_pass']['titel'] }}</span>
+                        <span class="popup__line"></span>
+                        <input required hidden type="text" id="token" value="{{ token }}" />
+                        <div class="popup__inputs">
+                            <input required class="popup__input" type="password" id="new-password" />
+                            <img class="passvis" src="{{ url_for('static', filename='img/passw.svg') }}" alt="" />
+                            <span class="popup__input-text">{{ conf['auth']['new_pass']['new_pass'] }}</span>
+                        </div>
+                        <span class="popup__input-info">
+                            {{ conf['auth']['new_pass']['sub_new_pass'] }}
+                        </span>
+                        <div class="popup__inputs">
+                            <input required class="popup__input" type="password" id="new-password-confirm" />
+                            <img class="passvis" src="{{ url_for('static', filename='img/passw.svg') }}" alt="" />
+                            <span class="popup__input-text">{{ conf['auth']['new_pass']['new_pass_check'] }}</span>
+                        </div>
+                        <span class="popup__aht" style="display: none">Пароли не совпадают</span>
+                        <button disabled class="popup__btn">{{ conf['auth']['new_pass']['button'] }}</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    <!--  Пароль изменён  -->
+    <div class="popup_wrapper" style="display: none" id="popup-password-changed">
+        <div class="reg-container">
+            <div class="popups-container">
+                <div class="popup">
+                    <form class="popup__body">
+                        <span class="popup__text"> Пароль успешно изменен.</span>
+                        <button class="popup__btn">Закрыть</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--  Почта подтверждена  -->
+    <div class="popup_wrapper" style="display: none" id="popup-email-confirmed">
+        <div class="reg-container">
+            <div class="popups-container">
+                <div class="popup">
+                    <form class="popup__body">
+                        <span class="popup__text">{{ conf['auth']['email_mail'] }}</span>
+                        <button class="popup__btn">{{ conf['auth']['button_close'] }}</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--  Форма регистрации-->
+    <div class="popup_wrapper" style="display: none" id="popup-register">
+        <div class="reg-container">
+            <form class="reg__body" action="#">
+                <div class="row my-3 my-md-4">
+                    <img src="{{ url_for('static', filename='img/ChinaNearLogo.svg') }}" class="mx-auto" />
+                </div>
+                <hr />
+                <div class="reg-title">{{ conf['auth']['register']['titel'] }}</div>
+                <div class="reg-row">
+                    <div class="reg-input__row">
+                        <div class="order__counter">
+                            <input placeholder="username@domain.com" class="string" type="email" name="email"
+                                required />
+                            <span class="number__title">E-mail <span class="text-danger">*</span></span>
+                            <span class="undertext">{{ conf['auth']['register']['sub_email'] }}</span>
+                        </div>
+                    </div>
+                    <div class="reg-input__row">
+                        <div class="order__counter">
+                            <input placeholder="+X (XXX) XXX-XX-XX" class="string" type="number" name="phone"
+                                required />
+                            <span class="number__title">{{ conf['auth']['register']['phon'] }} <span
+                                    class="text-danger">*</span></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="reg-row">
+                    <div class="reg-input__row">
+                        <div class="order__counter">
+                            <input placeholder="First name" class="string" type="text" name="fname" required />
+                            <span class="number__title">{{ conf['auth']['register']['f_name'] }} <span
+                                    class="text-danger">*</span></span>
+                        </div>
+                    </div>
+                    <div class="reg-input__row">
+                        <div class="order__counter">
+                            <input placeholder="Last name" class="string" type="text" name="lname" required />
+                            <span class="number__title">{{ conf['auth']['register']['l_name'] }} <span
+                                    class="text-danger">*</span></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="reg100">
+                    <p class="col-12 info__text mb-2">
+                        {{ conf['auth']['register']['company_name_text'] }}
+                    </p>
+                    <div class="col-12 my-2">
+                        <div class="order__counter">
+                            <input placeholder="Bayer-name" class="string" type="text" name="company_name" required />
+                            <span class="number__title">{{ conf['auth']['register']['company_name'] }} <span
+                                    class="text-danger">*</span></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="reg-col">
+                    <p class="info__text">
+                        {{ conf['auth']['register']['market_name_text'] }}
+                    </p>
+                    <div class="reg-row">
+                        <div class="reg-input__row">
+                            <div class="order__counter">
+                                <input placeholder="Brand" class="string" type="text" name="market_name_ru" required />
+                                <span class="number__title">{{ conf['auth']['register']['market_name'] }}
+                                    <span class="text-danger">*</span></span>
+                            </div>
+                        </div>
+                        <div class="reg-input__row">
+                            <div class="order__counter">
+                                <input placeholder="Brand (eng)" class="string" type="text" name="market_name_en"
+                                    required />
+                                <span class="number__title">{{ conf['auth']['register']['market_name'] }} (eng)
+                                    <span class="text-danger">*</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="reg-col">
+                    <p class="col-12 info__text mb-2">
+                        {{ conf['auth']['register']['address'] }}
+                    </p>
+                    <div class="reg-row">
+                        <div class="reg-input__row33">
+                            <div class="order__counter">
+                                <input placeholder="123456" class="string" type="number" name="index" required />
+                                <span class="number__title">{{ conf['auth']['register']['index'] }} <span
+                                        class="text-danger">*</span></span>
+                            </div>
+                        </div>
+                        <div class="reg-input__row33">
+                            <div class="order__counter">
+                                <input placeholder="Россия" class="string" type="text" name="country" required />
+                                <span class="number__title">{{ conf['auth']['register']['country'] }} <span
+                                        class="text-danger">*</span></span>
+                            </div>
+                        </div>
+                        <div class="reg-input__row33">
+                            <div class="order__counter">
+                                <input placeholder="Москва" class="string" type="text" name="city" required />
+                                <span class="number__title">{{ conf['auth']['register']['city'] }} <span
+                                        class="text-danger">*</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="reg-row">
+                    <div class="reg-input__row">
+                        <div class="order__counter">
+                            <input placeholder="Переведеновский пер." class="string" type="text" name="street"
+                                required />
+                            <span class="number__title">{{ conf['auth']['register']['street'] }} <span
+                                    class="text-danger">*</span></span>
+                        </div>
+                    </div>
+                    <div class="reg-input__row25">
+                        <div class="order__counter">
+                            <input placeholder="123456" class="string" type="text" name="house" required />
+                            <span class="number__title">{{ conf['auth']['register']['house'] }} <span
+                                    class="text-danger">*</span></span>
+                        </div>
+                    </div>
+                    <div class="reg-input__row25">
+                        <div class="order__counter">
+                            <input placeholder="123456" class="string" type="text" name="building" />
+                            <span class="number__title">{{ conf['auth']['register']['stroy'] }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="reg-row">
+                    <div class="reg-input__row">
+                        <div class="order__counter">
+                            <input class="string" type="password" name="password" required id="password" />
+                            <span class="number__title">{{ conf['auth']['register']['pass'] }} <span
+                                    class="text-danger">*</span></span>
+                            <span class="undertext">{{ conf['auth']['register']['sub_pass'] }}</span>
+                            <img class="passw" src="{{ url_for('static', filename='img/passw.svg') }}" alt="" />
+                        </div>
+                    </div>
+                    <div class="reg-input__row">
+                        <div class="order__counter">
+                            <input class="string" type="password" required id="password-confirm" />
+                            <span class="number__title">{{ conf['auth']['register']['pass_chek'] }} <span
+                                    class="text-danger">*</span></span>
+                            <img class="passw" src="{{ url_for('static', filename='img/passw.svg') }}" alt="" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row d-flex">
+                    <button disabled class="mx-auto my-3 price__button reg-button" type="submit" id="register-button">
+                        {{ conf['auth']['register']['reg_but'] }}
+                    </button>
+                </div>
+                <div class="row d-flex">
+                    <a href="#" class="mx-auto mb-4 deliver__link paddb32px" onclick="hideAllPopups()">Закрыть</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

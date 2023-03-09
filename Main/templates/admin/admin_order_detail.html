@@ -1,0 +1,117 @@
+{% extends 'admin/Base/admin_base.html' %}
+{% block title %}Admin{% endblock title %}
+
+{% block link %}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/order_detail.css') }}">
+{% endblock link %}
+
+
+{% block main %}
+		<main>
+			<div class="poisk">
+                <input class="input-poisk" value type="search" placeholder="Введите наименование продавца"   autocomplete= "off" id="null">
+                <span class="icon-poisk"><img src="{{ url_for('static', filename='img/loop.svg') }}" alt=""></span>
+    		</div>
+			<hr>
+			<div class="diller_and_button">
+				<div class="diller">
+					<p>Продавец:</p>
+					<a href="#">Calvine Cline</a>
+					<hr>
+					<span>Заказы</span>
+					<hr>
+					<span>Заказ: №XM8S2459WML-1</span>
+				</div>
+				<div class="buttons">
+                    <button><a href="{{ url_for('admin_orders', user='1') }}">Закрыть</a></button>
+                    <button><a href="{{ url_for('admin_orders', user='1') }}">Подтвердить</a></button>
+				</div>
+			</div>
+			<div class="container_info_order">
+				<div class="info_top">
+					<p>Покупатель:</p>
+					<a href="#">Bayer Name</a>
+				</div>
+				<div class="info_main">
+					<p>Доставка:</p>
+					<span>Xtxyz</span>
+				</div>
+				<div class="info_bottom">
+					<div class="bottom-left">
+						<p>Статус:</p>
+						<span>Ожидает подтверждения покупателем</span>
+					</div>
+					<div class="bottom-right">
+						<button>Изменить</button>
+						<button>Подтвердить оплату</button>
+					</div>
+				</div>
+			</div>
+			<div class="order-product-wrapper">
+				<div class="order-product order-product_order">
+					<div class="order-product__image-block">
+						<a href="">
+							<img alt="" class="order-product__image" src="{{ url_for('static', filename='img/product1.svg') }}">
+						</a>
+					</div>
+					<div class="order-product__description">
+						<a class="order-product__name" href="">Автомобильное сиденье Recaro Monza Nova 2 seatfix, GR, 2/3, цвет Select Swet Curry ...</a>
+					</div>
+					<div class="order-price-block">
+						<div class="price_one">
+							<span>Стоимость:</span>
+							<span>3 999 {{ session['currency'] }}</span>
+						</div>
+						<div class="quantity">1 шт. x 3 999 {{ session['currency'] }}</div>
+						<a href="">Изменить</a>
+					</div>
+				</div>
+				<div class="order-product order-product_order">
+					<div class="order-product__image-block">
+						<a href="">
+							<img alt="" class="order-product__image" src="{{ url_for('static', filename='img/product1.svg') }}">
+						</a>
+					</div>
+					<div class="order-product__description">
+						<a class="order-product__name" href="">Автомобильное сиденье Recaro Monza Nova 2 seatfix, GR, 2/3, цвет Select Swet Curry ...</a>
+					</div>
+					<div class="order-price-block">
+						<div class="price_one">
+							<span>Стоимость:</span>
+							<span>3 999 ₽</span>
+						</div>
+						<div class="quantity">1 шт. x 3 999 {{ session['currency'] }}</div>
+						<a href="">Изменить</a>
+					</div>
+				</div>
+				<div class="order-product order-product_order">
+					<div class="order-product__image-block">
+						<a href="">
+							<img alt="" class="order-product__image" src="{{ url_for('static', filename='img/product1.svg') }}">
+						</a>
+					</div>
+					<div class="order-product__description">
+						<a class="order-product__name" href="">Автомобильное сиденье Recaro Monza Nova 2 seatfix, GR, 2/3, цвет Select Swet Curry ...</a>
+					</div>
+					<div class="order-price-block">
+						<div class="price_one">
+							<span>Стоимость:</span>
+							<span>3 999 ₽</span>
+						</div>
+						<div class="quantity">1 шт. x 3 999 {{ session['currency'] }}</div>
+						<a href="">Изменить</a>
+					</div>
+				</div>
+				<div class="final_price">
+					<p>Стоимость заказа:</p><span>752 196 {{ session['currency'] }}</span>
+				</div>
+			</div>
+			<div class="comment">
+				<textarea placeholder="Комментарий к заказу"></textarea>
+			</div>
+			<div class="buttons-bottom">
+				<button><a href="{{ url_for('admin_orders', user='1') }}">Закрыть</a></button>
+				<button><a href="{{ url_for('admin_orders', user='1') }}">Подтвердить</a></button>
+			</div>
+		</main>
+{% endblock main %}

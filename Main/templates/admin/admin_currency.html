@@ -1,0 +1,35 @@
+{% extends 'admin/Base/admin_base.html' %}
+
+{% block title %}Курс валют{% endblock title %}
+
+{% block link %}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/currency.css') }}">
+{% endblock link %}
+
+
+{% block main %}
+		<main>
+			<h1>Курсы валют</h1>
+			<hr>
+			<div class="currency_container">
+                <form action="/admin/currency_change" method="post">
+				    <div class="currency_converter">
+				    	<p>1 USD =</p>
+				    	<input type="text" min="1" name="value" id="value" placeholder="{{ currencyru }}" required>
+				    	<p>RUB</p>
+                        <input type="text" hidden name="currency" id="currency" value="RUB">
+				    	<button type="submit">УСТАНОВИТЬ</button>
+				    </div>
+                </form>
+                <form action="/admin/currency_change" hidden>
+				    <div class="currency_converter">
+				    	<p>1 USD =</p>
+				    	<input type="text" min="1" name="value" id="value" placeholder="{{ currencycn }}" required>
+				    	<p>CNY</p>
+                        <input type="text" hidden name="currency" id="currency" value="CNY">
+				    	<button>УСТАНОВИТЬ</button>
+				    </div>
+                </form>
+			</div>
+		</main>
+{% endblock main %}

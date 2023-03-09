@@ -1,0 +1,144 @@
+{% extends 'admin/Base/admin_base.html' %}
+{% block title %}Admin{% endblock title %}
+
+{% block link %}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/order_list.css') }}">
+<script defer src="{{ url_for('static', filename='js/searchOrders.js') }}"></script>
+<script defer src="{{ url_for('static', filename='scripts/filter_order.js') }}"></script>
+<script defer src="{{ url_for('static', filename='scripts/filter.js') }}"></script>
+{% endblock link %}
+
+
+{% block main %}
+<main>
+	<div class="poisk">
+		<input class="input-poisk" type="search" placeholder="Введите наименование продавца" autocomplete="off"
+			id="seller-search" />
+		<span class="icon-poisk"><img src="{{ url_for('static', filename='img/loop.svg') }}" alt="" /></span>
+		<ul id="sellers-list" style="display: none; z-index: 1;">
+			<li class="sellers-list__li"><a href="#">Продавец 1</a></li>
+			<li class="sellers-list__li"><a href="#">Продавец 2</a></li>
+			<li class="sellers-list__li"><a href="#">Продавец 3</a></li>
+		</ul>
+	</div>
+	<hr>
+	<div class="diller">
+		<p>Продавец:</p>
+		<a href="#">Calvine Cline</a>
+		<hr>
+		<span>Товары</span>
+	</div>
+	<div class="filter">
+		<div class="filter_1">
+			<p>{{ conf['orders']['filter_text'] }}</p>
+			<select id="offer-status">
+                <option>{{ conf['orders']['o_all'] }}</option>
+                <option value="New">{{ conf['orders']['o_new'] }}</option>
+                <option value="ReadyForPayment">{{ conf['orders']['o_redy'] }}</option>
+                <option value="AwaitingApproval">{{ conf['orders']['o_way'] }}</option>
+                <option value="ReadyToShip">{{ conf['orders']['o_redy_send'] }}</option>
+                <option value="Cancelled">{{ conf['orders']['o_canceled'] }}</option>
+			</select>
+		</div>
+		<div class="filter_f">
+			<div class="filter_1">
+				<p>{{ conf['orders']['period_from'] }}</p>
+				<input type="date" id="min-date">
+			</div>
+			<div class="filter_1">
+				<p>{{ conf['orders']['period_to'] }}</p>
+				<input type="date" id="max-date">
+			</div>
+		</div>
+		<div class="buttons">
+			<button id="apply-filters">{{ conf['orders']['apply'] }}</button>
+			<button id="reset-filters">{{ conf['orders']['reset_filter'] }}</button>
+		</div>
+	</div>
+	<div class="action">
+		<div class="dropdown">
+			<button class="b-action">Действие</button>
+			<div class="dropdown-content-left">
+				<a href="#">Удалить</a>
+				<a href="#">Действие 2</a>
+				<a href="#">Действие 3</a>
+				<a href="#">Действие 4</a>
+			</div>
+		</div>
+		<div class="page">
+			{% if page > 1 %}
+			<button class="prev-page">{{ conf['pagination']['previous'] }}</button>
+			{% endif %}
+			<div class="col pages-list">
+				<a>1</a>
+				<a>2</a>
+				<a>3</a>
+				<a>4</a>
+				<a>5</a>
+			</div>
+			<button class="next-page">{{ conf['pagination']['next'] }}</button>
+		</div>
+	</div>
+	<div class="table_product">
+		<table>
+            <tr>
+                <th>
+                    <input type="checkbox" class="custom-checkbox" id="cb">
+                    <label for="cb"></label>
+                </th>
+                <th>{{ conf['orders']['t_order'] }}</th>
+                <th>{{ conf['orders']['t_status'] }}</th>
+                <th>{{ conf['orders']['t_create_time'] }}</th>
+                <th>{{ conf['orders']['t_change_time'] }}</th>
+                <th>{{ conf['orders']['t_name_count'] }}</th>
+                <th>{{ conf['orders']['t_product_count'] }}</th>
+                <th>{{ conf['orders']['t_seller'] }}</th>
+                <th>{{ conf['orders']['t_price'] }}</th>
+                <th></th>
+            </tr>
+			<tr>
+                {% for i in offers %}
+                <tr class="offer" data-date="{{ i[2] }}" data-status="{{ i[1] }}" data-id="{{ i[0] }}">
+                    <td>
+                        <input type="checkbox" class="custom-checkbox" id="cb{{i[0]}}">
+                        <label for="cb{{i[0]}}"></label>
+                    </td>
+                    <td hidden><button><img src="{{ url_for('static', filename='img/arrow.svg') }}" alt=""></button></td>
+                    <td>{{ i[0] }}</td>
+                    <td>{{ i[1] }}</td>
+                    <td>{{ i[2] }}</td>
+                    <td>{{ i[3] }}</td>
+                    <td>{{ i[4] }}</td>
+                    <td>{{ i[5] }}</td>
+                    <td>{{ i[6] }}</td>
+                    <td>{{ i[7] }} {{ session['currency'] }}</td>
+                    <td>
+                        <div class="dropdown">
+                            <button data-uid="i[0]" class="three_point"></button>
+                            <div id="myDropdown_four" class="dropdown-content">
+                                 <a href="{{ url_for('order_detal', order_number=i[0]) }}">{{ conf['orders']['change'] }}</a>
+                                <a class="cancel_offer">{{ conf['orders']['cancel'] }}</a>
+                              </div>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+		</table>
+	</div>
+	<div class="action-bottom">
+		<div class="page">
+			{% if page > 1 %}
+			<button class="prev-page">{{ conf['pagination']['previous'] }}</button>
+			{% endif %}
+			<div class="col pages-list">
+				<a>1</a>
+				<a>2</a>
+				<a>3</a>
+				<a>4</a>
+				<a>5</a>
+			</div>
+			<button class="next-page">{{ conf['pagination']['next'] }}</button>
+		</div>
+	</div>
+</main>
+{% endblock main %}

@@ -1,0 +1,38 @@
+main h1{
+ 	font-size: 32px
+}
+main{
+	padding: 36px 0;
+}
+main hr{
+	margin: 15px 0 40px;
+}
+.currency_converter{
+	display: flex;
+	align-items: center;
+}
+.currency_container{
+	display: flex;
+	flex-direction: column;
+	gap: 41px;
+}
+.currency_converter p{
+	font-size: 18px;
+	color: #616161;
+}
+.currency_converter input{
+	width: 112px;
+	height: 40px;
+	font-size: 18px;
+	padding: 0 8px;
+	color: #616161;
+	margin: 0 16px;
+}
+.currency_converter button{
+	background-color: white;
+	border: none;
+	margin-left: 48px;
+	font-size: 14px;
+	color: #428BCA;
+	padding: 11px 16px;
+}

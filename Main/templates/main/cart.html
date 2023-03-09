@@ -1,0 +1,98 @@
+{% extends 'main/Base/base.html' %} {% block title %}ChinaNear | Главная{% endblock title %} {%
+block link %}
+<script defer src="{{ url_for('static', filename='scripts/catalog.js') }}"></script>
+<script defer src="{{ url_for('static', filename='scripts/jquery-3.1.1.min.js' )}}"></script>
+<script defer src="{{ url_for('static', filename='scripts/cart.js' )}}"></script>
+{% endblock link %} {% block main %}
+<main class="content">
+    {{ script | safe }}
+    {% if cart == 1 %}
+    <div class="container">
+        <div class="cart__wrapper">
+            <div class="cart__body">
+                <div class="cart__body-top">
+                    <div class="cart__title">
+                        <h1>{{ conf['cart']['titel'] }}</h1>
+                    </div>
+                    <div class="cart__delivery">
+                        <span class="delivery__title">{{ conf['cart']['address'] }}:</span>
+                        <span class="delivery__adress">{{ address }}</span>
+                        <a hidden href="" class="delivery__options">Изменить</a>
+                    </div>
+                </div>
+                <div class="cart__body-bottom">
+                    <div class="cart__menu">
+                        <div class="checkbox">
+                            <input type="checkbox" name="" id="cb1" />
+                            <label class="checkbox__label" for="cb1">{{ conf['cart']['all'] }}</label>
+                        </div>
+                        <button class="delete__button">{{ conf['cart']['delete_all'] }}</button>
+                    </div>
+                    {% for seller in dict %}
+                    <form class="delivery">
+                        <div class="deliver" data-uid="{{ dict[seller][0][4] }}">
+                            <div class="deliver__info">
+                                <span>{{ conf['cart']['seller'] }}:</span>
+                                <p class="deliver__name">{{ dict[seller][0][5] }}</p>
+                            </div>
+                            <a href="{{ url_for('start_chat', trader=dict[seller][0][4]) }}" class="deliver__link">{{
+                                conf['cart']['chat'] }}</a>
+                        </div>
+                        {% for product in dict[seller] %}
+                        <div class="orders" data-uid="{{ product[0] }}">
+                            <div class="order">
+                                <div class="order__item">
+                                    <div class="order__item-group">
+                                        <div class="tovar__check">
+                                            <div class="checkbox">
+                                                <input class="checkbox__box" type="checkbox" id="{{ product[0] }}" />
+                                                <label class="checkbox__label" for="{{ product[0] }}"></label>
+                                            </div>
+                                            <img class="order__img" src="{{ product[2]['photo-url'] }}" alt="" />
+                                        </div>
+                                        <div class="order__info">
+                                            <span class="order__text">{{ product[1] }}</span>
+                                            <button class="deliver__link order__link delete-order-link">
+                                                {{ conf['cart']['delete'] }}
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="order__item-group botgroup">
+                                        <div class="order__price">
+                                            <span class="total-price"></span> {{ session['currency'] }}
+                                        </div>
+                                        <div class="order__counter">
+                                            <span class="number__title">{{ conf['cart']['count'] }}</span>
+                                            <input min="1" placeholder="1" class="number" type="number" name=""
+                                                value="{{ product[6] }}" />
+                                            <span class="undertext"><span class="item-price"></span> {{
+                                                session['currency'] }} / {{
+                                                conf['cart']['count_mini'] }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        <textarea placeholder="{{ conf['cart']['comment'] }}" class="order__textarea" name=""
+                            id=""></textarea>
+                    </form>
+                    {% endfor %}
+                </div>
+
+            </div>
+            <div class="cart__price">
+                <div class="price__title">{{ conf['cart']['total_price'] }}:</div>
+                <span class="price__count"><span class="full-cart-price">0</span> {{ session['currency'] }}
+                </span>
+                <button class="price__button" id="send-offer">{{ conf['cart']['offer'] }}</button>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="empty__cart">
+        <h2 class="empty__title">{{ conf['cart']['cart_empty'] }}</h2>
+    </div>
+    {% endif %}
+</main>
+{% endblock main %}

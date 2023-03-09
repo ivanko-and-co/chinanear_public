@@ -1,0 +1,66 @@
+{% extends 'user_lk/Base/base_lk.html' %}
+{% block title %}ChinaNear | Главная{% endblock title %}
+{% block link %}
+<link defer rel="stylesheet" href="{{ url_for('static', filename='styles/order_detail.css') }}">
+{% endblock link %}
+{% block main %}
+		<main>
+			<div class="detail_header">
+				<div class="detail_header-left">
+					<div class="detail_header-left_left">
+						<a href="{{ url_for('orders') }}"><img src="{{ url_for('static', filename='img/return.svg') }}" alt=""></a>
+						<h1>{{ conf['orders_detal']['order'] }} {{ order_number }}</h1>
+					</div>	
+					<div class="otmena">
+						<div class="status">{{ status }}</div>
+						<a href="#">{{ conf['orders_detal']['cancel_order'] }}</a>
+					</div>
+				</div>
+				<div class="buttons">
+					<button>{{ conf['orders_detal']['close'] }}</button>
+					<button>{{ conf['orders_detal']['confrim'] }}</button>
+				</div>
+			</div>
+			<hr>
+			<div class="container_info_order_bayer">
+				<div class="info_top-bayer">
+					<p>{{ conf['orders_detal']['seller'] }}:</p>
+					<a href="#">{{ seller_name }}</a>
+				</div>
+				<div class="info_main_bayer">
+					<p>{{ conf['orders_detal']['delivery'] }}:</p>
+					<span>{{ address }}</span>
+				</div>
+			</div>
+			<div class="order-product-wrapper">
+                {% for product in products %}
+				<div class="order-product order-product_order">
+					<div class="order-product__image-block">
+						<img alt="" class="order-product__image" src="{{ products[product][3] }}">
+					</div>
+					<div class="order-product__description">
+						<p class="order-product__name" href="">{{ products[product][4] }}</p>
+					</div>
+					<div class="order-price-block">
+						<div class="price_one">
+							<span>{{ conf['orders_detal']['price'] }}:</span>
+							<span>{{ products[product][2] }} {{ session['currency'] }}</span>
+						</div>
+						<div class="quantity">{{ products[product][0] }} {{ conf['orders_detal']['price'] }} x {{ products[product][1] }} {{ session['currency'] }}</div>
+					</div>
+				</div>
+                {% endfor %}
+				<div class="final_price">
+					<p>{{ conf['orders_detal']['price_order'] }}:</p><span>{{ total_price }} {{ session['currency'] }}</span>
+				</div>
+			</div>
+
+			<div class="comment">
+				<textarea placeholder="{{ conf['orders_detal']['comment'] }}"></textarea>
+			</div>
+			<div class="buttons-bottom">
+				<button>{{ conf['orders_detal']['close'] }}</button>
+				<button>{{ conf['orders_detal']['confrim'] }}</button>
+			</div>
+		</main>
+{% endblock main %}

@@ -1,0 +1,151 @@
+{% extends 'main/Base/base.html' %}
+{% block title %}ChinaNear | Главная{% endblock title %}
+{% block link %}
+<script defer src="{{ url_for('static', filename='scripts/jquery-3.6.0.min.js') }}"></script>
+<script defer src="{{ url_for('static', filename='scripts/cart.js') }}"></script>
+<script defer src="{{ url_for('static', filename='scripts/catalog.js') }}"></script>
+{% endblock link %}
+{% block main %}
+<main class="content">
+    <div class="container">
+        <div class="content__body">
+            <nav class="content__categories">
+                <div class="categories__title">
+                    <img src="{{ url_for('static', filename='img/categories.png') }}" alt="" />
+                    <h2>{{ tree[2][0] }}</h2>
+                </div>
+                <section class="categories__items">
+                    {% for i in categoryes %}
+                    <a href="{{ url_for('catalog', l1_category=tree[0][1], l2_category=tree[1][1], l3_category=i[1]) }}"
+                        class="categories__item">
+                        <h3>{{ i[0] }}</h3>
+                    </a>
+                    {% endfor %}
+                </section>
+            </nav>
+            <div class="content__content">
+                <nav class="top-nav">
+                    <div class="top-nav__left">
+                        <div class="top-nav__item">
+                            <a href="{{ url_for('home') }}">{{ tree[0][0] }}</a>
+                        </div>
+                        <img src="{{ url_for('static', filename='img/arrow.svg') }}" alt="" />
+                        <div class="top-nav__item">
+                            <a href="{{ url_for('home', l1_category=tree[0][1]) }}">{{ tree[1][0] }}</a>
+                        </div>
+                        <img src="{{ url_for('static', filename='img/arrow.svg') }}" alt="" />
+                        <div class="top-nav__item">
+                            <a href="{{ url_for('home', l1_category=tree[0][1], l2_category=tree[1][1]) }}">{{
+                                tree[2][0] }}</a>
+                        </div>
+                    </div>
+                    <div class="top-nav__right">
+                        <img id="blockMenu" draggable="false" onclick="blockMenuSet()"
+                            src="{{ url_for('static', filename='img/col-menu.svg') }}" alt="" />
+                        <img id="rowMenu" draggable="false" onclick="rowMenuSet()"
+                            src="{{ url_for('static', filename='img/row-menu__active.svg') }}" alt="" />
+                    </div>
+                </nav>
+                <ul class="products-row">
+                    {% for i in products %}
+                    <div class="product-row__item">
+                        <a class="product-row__logo"
+                            href="{{ url_for('product', l1_category=tree[0][1], l2_category=tree[1][1], l3_category=tree[2][1], article=i['uid']) }}">
+                            <img src="{{ i['photo'] }}" alt="" />
+                        </a>
+                        <div class="info-col">
+                            <div class="info-row__sb">
+                                <div class="info-row">
+                                    <a href="{{ url_for('product', l1_category=tree[0][1], l2_category=tree[1][1], l3_category=tree[2][1], article=i['uid']) }}"><span
+                                            class="info-row__title"> {{ i['name'] }} </span></a>
+                                    <span class="info-row__text">
+                                        {{ i['shortDescription'] }}
+                                    </span>
+                                </div>
+                                <div class="product-row__item-price">
+                                    <span>{{ i['prices'] }} {{ session['currency'] }}</span>
+                                </div>
+                            </div>
+                            <div class="info-row__sb">
+                                <div class="info-row__deliver">
+                                    <div class="info-row__deliver-text">
+                                        <span>{{ conf['main']['seller'] }} </span>
+                                        <p class="deliver__link notundrl">{{ i['seller_name'] }}</p>
+                                    </div>
+                                    <span>{{ conf['main']['sclad'] }} {{ i['stock'] }}</span>
+                                </div>
+                                {% if ses[-1] == 'buyer' %}
+                                <button class="product-row__btn" data-uid="{{ i['uid'] }}">
+                                    {{ conf['main']['add_cart'] }}
+                                </button>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </ul>
+                {% if page != 1 %}
+                <nav class="page-navigation">
+                    <div class="page-navigation__body">
+                        <div class="page-navigation__perpage">
+                            <span class="info__text">{{ conf['pagination']['display'] }}</span>
+                            <select class="perpage-select" id="perpage-select">
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="15">15</option>
+                                <option value="20">20</option>
+                            </select>
+                            <span class="info__text">{{ conf['pagination']['page'] }}</span>
+                        </div>
+                        <div class="page-navigation__pagelist">
+                            <button class="pagelist__btn" id="prev-page" {% if page==1 %} style="display: none;" {% endif %}>
+                                <img src="{{ url_for('static', filename='img/bl.svg') }}" alt="Previous" />
+                                <span>{{ conf['pagination']['previous'] }}</span>
+                            </button>
+                            <ul class="page-navigation__pagescounter info__text">
+                                {% if page < 4 %}
+                                    {% if pages_count < 7 %}
+                                        {% for i in pages_count_list %}
+                                        <li><a href="" class="pagescounter__link {% if i == page %} currentpage__selected {% endif %}">{{ i }}</a></li>
+                                        {% endfor %}
+                                    {% else %}
+                                        {% for i in (1, 2, 3, 4) %}
+                                        <li><a href="" class="pagescounter__link {% if i == page %} currentpage__selected {% endif %}">{{ i }}</a></li>
+                                        {% endfor %}
+                                        <li>...</li>
+                                        <li><a href="" class="pagescounter__link">{{ pages_count_list[-1] }}</a></li>
+                                    {% endif %}
+                                {% else %}
+                                    <li><a href="" class="pagescounter__link">{{ 1 }}</a></li>
+                                    <li>...</li>
+                                    <li><a href="" class="pagescounter__link">{{ page - 1 }}</a></li>
+                                    <li><a href="" class="pagescounter__link currentpage__selected">{{ page }}</a></li>
+                                    {% if page + 4 <= pages_count %}
+                                    <li><a href="" class="pagescounter__link">{{ page + 1 }}</a></li>
+                                    <li>...</li>
+                                    <li><a href="" class="pagescounter__link">{{ pages_count_list[-1] }}</a></li>
+                                    {% elif page + 3 == pages_count %}
+                                    <li><a href="" class="pagescounter__link">{{ page + 1 }}</a></li>
+                                    <li><a href="" class="pagescounter__link">{{ page + 2 }}</a></li>
+                                    <li><a href="" class="pagescounter__link">{{ pages_count_list[-1] }}</a></li>
+                                    {% elif page + 2 == pages_count %}
+                                    <li><a href="" class="pagescounter__link">{{ page + 1 }}</a></li>
+                                    <li><a href="" class="pagescounter__link">{{ page + 2 }}</a></li>
+                                    {% elif page + 1 == pages_count %}
+                                    <li><a href="" class="pagescounter__link">{{ page + 1 }}</a></li>
+                                    {% endif %}
+                                {% endif %}
+                            </ul>
+                            <button class="pagelist__btn" id="next-page" {% if page == pages_count %} style="display: none;" {% endif %}>
+                                <span>{{ conf['pagination']['next'] }}</span>
+                                <img src="{{ url_for('static', filename='img/br.svg') }}" alt="Next" />
+                            </button>
+                        </div>
+                    </div>
+                </nav>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock main %}

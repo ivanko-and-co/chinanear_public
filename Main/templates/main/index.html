@@ -1,0 +1,45 @@
+{% extends 'main/Base/base.html' %}
+
+{% block title %}ChinaNear | Главная{% endblock title %}
+
+{% block link %}
+{% endblock link %}
+
+{% block main %}
+<main class="content">
+    <div class="container">
+        <div class="main__body">
+            <ul class="main__menu">
+                {% for i in category %}
+                <li class="menu-item">
+                    {% if l1_category == '' %}
+                    <a class="menu-item__logo"
+                        href="{{ url_for('home', l1_category=i[1]) }}">
+                        <img src="{{ url_for('static', filename='img/test1.png') }}" alt="" />
+                    </a>
+                    <span class="menu-item__info">{{ i[0] }}</span>
+                    <a href="{{ url_for('home', l1_category=i[1]) }}" class="product__btn">{{ conf['main']['go'] }}</a>
+                    {% elif l2_category == '' %}
+                    <a class="menu-item__logo"
+                        href="{{ url_for('home', l1_category=l1_category, l2_category=i[1]) }}">
+                        <img src="{{ url_for('static', filename='img/test1.png') }}" alt="" />
+                    </a>
+                    <span class="menu-item__info">{{ i[0] }}</span>
+                    <a href="{{ url_for('home', l1_category=l1_category, l2_category=i[1]) }}" class="product__btn"
+                        type="submit">{{ conf['main']['go'] }}</a>
+                    {% else %}
+                    <a class="menu-item__logo"
+                        href="{{ url_for('catalog', l1_category=l1_category, l2_category=l2_category, l3_category=i[1]) }}">
+                        <img src="{{ url_for('static', filename='img/test1.png') }}" alt="" />
+                    </a>
+                    <span class="menu-item__info">{{ i[0] }}</span>
+                    <a href="{{ url_for('catalog', l1_category=l1_category, l2_category=l2_category, l3_category=i[1]) }}"
+                        class="product__btn" type="submit">{{ conf['main']['go'] }}</a>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</main>
+{% endblock main %}

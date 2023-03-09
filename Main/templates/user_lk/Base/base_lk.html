@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock title %}</title>
+    <script src="{{ url_for('static', filename='scripts/jquery-3.6.0.min.js') }}"></script>
+    {% block link %}{% endblock link %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/header.css') }}">
+    <script defer src="{{ url_for('static', filename='js/dropdown.js') }}"></script>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}" type="image/x-icon" />
+    <script defer src="{{ url_for('static', filename='scripts/mobile.js') }}"></script>
+</head>
+
+<body>
+    <div class="wrapper">
+        <header>
+            <div class="container">
+                <div class="header-left">
+                    <div class="header_logo">
+                        <a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='img/logo.svg') }}"
+                                alt=""></a>
+                    </div>
+                    <div class="menu_list">
+                        {% if ses == 'seller' %}
+                        <a href="{{ url_for('product_list') }}">{{ conf['base_lk']['product'] }}</a>
+                        {% endif %}
+                        <a href="{{ url_for('orders') }}">{{ conf['base_lk']['orders'] }}</a>
+                        <a href="{{ url_for('chat') }}">{{ conf['base_lk']['chats'] }}</a>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <p class="help">{{ conf['base_lk']['help'] }}<img class="arrow"
+                            src="{{ url_for('static', filename='img/arrow_drop_down.svg') }}" alt=""></p>
+                    <hr>
+                    <div class="dropdown">
+                        <button class="language">
+                            {{ conf['base_lk']['leng'] }}
+                            {% if session['localization'] == 'Ru' %}
+                            <img class="flag" src="{{ url_for('static', filename='img/ru-flag.svg') }}" alt="">
+                            Русский
+                            {% else %}
+                            <img class="flag" src="{{ url_for('static', filename='img/en-flag.svg') }}" alt="">
+                            English
+                            {% endif %}
+                            <img class="arrow" src="{{ url_for('static', filename='img/arrow_drop_down.svg') }}" alt="">
+                        </button>
+                        <div id="myDropdown" class="dropdown-content">
+                            <a href="{{ url_for('change_localization', lang='Ru') }}">
+                                <img class="flag" src="{{ url_for('static', filename='img/Ru.png') }}" alt="" /> 
+                                Русский
+                            </a>
+                            <a href="{{ url_for('change_localization', lang='En') }}">
+                                <img class="flag" src="{{ url_for('static', filename='img/En.png') }}" alt="" />
+                                English
+                            </a>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <button class="currency">
+                            {{ conf['base_lk']['currency'] }}
+                            {% if session['currency'] == '₽' %}
+                            <img class="flag" src="{{ url_for('static', filename='img/Ru.png') }}" alt="Currency" />
+                            <span>RUB</span>
+                            {% else %}
+                            <img class="flag" src="{{ url_for('static', filename='img/USD.png') }}" alt="" />
+                            <span>USD</span>
+                            {% endif %}
+                            <img class="arrow" src="{{ url_for('static', filename='img/arrow_drop_down.svg') }}" alt="">
+                        </button>
+                        <div id="myDropdown_one" class="dropdown-content">
+                            <a href="{{ url_for('change_currency', cur='₽') }}"><img class="flag"
+                                    src="{{ url_for('static', filename='img/Ru.png') }}" alt="" />RUB</a>
+                            <a href="{{ url_for('change_currency', cur='$') }}"><img class="flag"
+                                    src="{{ url_for('static', filename='img/USD.png') }}" alt="" />USD
+                            </a>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="dropdown">
+                        <button class="account">
+                            <img src="{{ url_for('static', filename='img/person.svg') }}" alt="">
+                            {{ session['auth'][1] }} <img class="arrow"
+                                src="{{ url_for('static', filename='img/arrow_drop_down.svg') }}" alt="">
+                        </button>
+                        <div id="myDropdown_two" class="dropdown-content">
+                            <a href="{{ url_for('change_localization', lang='Ru') }}"><img class="flag"
+                                    src="{{ url_for('static', filename='img/Ru.png') }}" alt="" />Русский
+                            </a>
+                            <a href="{{ url_for('change_localization', lang='En') }}"><img class="flag"
+                                    src="{{ url_for('static', filename='img/En.png') }}" alt="" />English
+                            </a>
+                            <hr>
+                            {% if ses == 'seller' %}
+                            <a href="{{ url_for('product_list') }}">{{ conf['base_lk']['product'] }}</a>
+                            {% endif %}
+                            <a href="{{ url_for('orders') }}">{{ conf['base_lk']['orders'] }}</a>
+                            <a href="{{ url_for('chat') }}">{{ conf['base_lk']['chats'] }}</a>
+                            <hr>
+                            <a href="{{ url_for('logout') }}">{{ conf['base_lk']['exit'] }}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        {% block main %}
+        {% endblock main %}
+        <footer>
+            <p>{{ conf['main_base']['footer'] }} (С) Evil Tech, 2022 г.</p>
+        </footer>
+        <div class="mobile__menu">
+            <nav class="header-nav__mobile">
+                {% if session[-1] == 'buyer' %}
+                <a href="{{ url_for('cart') }}" class="nav-item">
+                    <!-- <span class="msg-count">4</span> -->
+                    <img class="nav-item__img" src="{{ url_for('static', filename='img/cart.svg') }}" alt="Корзина" />
+                    <span class="nav-item__title">{{ conf['main_base']['cart'] }}</span>
+                </a>
+                {% endif %}
+                {% if ses[-1] != 'none' %}
+                <a href="{{ url_for('orders') }}" class="nav-item">
+                    <!-- <span class="msg-count">3</span> -->
+                    <img class="nav-item__img" src="{{ url_for('static', filename='img/orders.svg') }}" alt="Мои заказы" />
+                    <span class="nav-item__title">{{ conf['main_base']['orders'] }}</span>
+                </a>
+                <a href="{{ url_for('chat') }}" class="nav-item">
+                    <!-- <span class="msg-count">15</span> -->
+                    <img class="nav-item__img" src="{{ url_for('static', filename='img/chat.svg') }}" alt="Мои чаты" />
+                    <span class="nav-item__title">{{ conf['main_base']['chat'] }}</span>
+                </a>
+                {% endif %}
+                <div onclick="openUserMenu()" class="nav-item">
+                    <!-- <span class="msg-count">15</span> -->
+                    <img class="nav-item__img" src="{{ url_for('static', filename='img/user2.sv') }}g" alt="Профиль" />
+                    <span class="nav-item__title">{{ conf['main_base']['prof'] }}</span>
+                </div>
+            </nav>
+        </div>
+        <div class="mobile-user">
+            <form class="mobile-user__body">
+                <img class="mobile-user__close" onclick="closeUserMenu()"
+                    src="{{ url_for('static', filename='img/mobclose.png') }}" />
+    
+                <div class="mobile-user__inputs">
+                    <span class="info__text">{{ conf['main_base']['leng_select'] }}</span>
+                    <select class="user__select" name="" id="">
+                        {% if session['localization'] == 'Ru' %}
+                        <option class="user__option">Русский</option>
+                        <option class="user__option" data-url="{{ url_for('change_localization', lang='En') }}">English</option>
+                        {% else %}
+                        <option class="user__option">English</option>
+                        <option class="user__option" data-url="{{ url_for('change_localization', lang='Ru') }}">Русский</option>
+                        {% endif %}
+                    </select>
+                </div>
+                <div class="mobile-user__inputs">
+                    <span class="info__text">{{ conf['main_base']['currency'] }}</span>
+                    <select class="user__select" name="" id="">
+                        {% if session['currency'] == '₽' %}
+                        <option class="user__option">RUB</option>
+                        <option class="user__option" data-url="{{ url_for('change_currency', cur='$') }}">USD</option>
+                        {% else %}
+                        <option class="user__option">USD</option>
+                        <option class="user__option" data-url="{{ url_for('change_currency', cur='₽') }}">RUB</option>
+                        {% endif %}
+                    </select>
+                </div>
+                <div class="mobile-user__inputs">
+                    {% if session[-1] == 'seller' %}
+                    <a class="deliver__link mmc" href="{{ url_for('product_list') }}">{{ conf['main_base']['product'] }}</a>
+                    {% endif %}
+                    {% if ses[-1] != 'none' %}
+                    <a href="{{ url_for('logout') }}" class="product__btn">{{ conf['main_base']['log_out'] }}</a>
+                    {% else %}
+                    <a id="login-btn-mobile" class="product__btn">{{ conf['main_base']['log_in'] }}</a>
+                    {% endif %}
+                </div>
+                <span class="info__text">{{ conf['main_base']['help'] }}</span>
+            </form>
+        </div>
+      <!--  Popup меню  -->
+    </div>
+</body>
+
+</html>
